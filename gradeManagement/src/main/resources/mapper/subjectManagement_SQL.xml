@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="subjectManagementDao">
+	<insert id="insertSubjectManagement" parameterType="subject">
+		INSERT INTO TBL_SUBJECT
+			(
+				COLLEGE_ID
+				, SEMESTER
+				, SUBJECT_NAME
+				, GRADE_TYPE
+				, ATTENDANCE_SCORE_RATIO
+			)
+		VALUES
+			(
+				#{collegeId, jdbcType=INTEGER}
+				, #{semester, jdbcType=VARCHAR}
+				, #{subjectName, jdbcType=VARCHAR}
+				, #{gradeType, jdbcType=INTEGER}
+				, #{attendanceScoreRatio, jdbcType=INTEGER}
+			)
+	</insert>
+	
+	
+	<select id="getSubjectManagementList" resultType="subject">
+		SELECT
+			SUBJECT.COLLEGE_ID AS collegeId
+     		, COLLEGE.COLLEGE_NAME AS collegeName
+			, SUBSTR(SUBJECT.SEMESTER, 5, 1) AS semester
+			, SUBJECT.SUBJECT_NAME AS subjectName
+			, SUBJECT.GRADE_TYPE AS gradeType
+			, CASE SUBJECT.GRADE_TYPE 
+				WHEN 1 THEN '절대평가' 
+       			ELSE '상대평가' END AS gradeTypeNAME
+			, SUBJECT.ATTENDANCE_SCORE_RATIO AS attendanceScoreRatio
+      		, SUBSTR(SUBJECT.SEMESTER, 1, 4) AS year
+		FROM 
+	      	TBL_SUBJECT SUBJECT, TBL_COLLEGE COLLEGE
+	    WHERE
+	      	SUBJECT.COLLEGE_ID = COLLEGE.COLLEGE_ID
+	</select>
+	
+	
+	<select id="getSubjectManagement" parameterType="subject" resultType="subject">
+		SELECT
+			SUBJECT.COLLEGE_ID AS collegeId
+     		, COLLEGE.COLLEGE_NAME AS collegeName
+			, SUBSTR(SUBJECT.SEMESTER, 5, 1) AS semester
+			, SUBJECT.SUBJECT_NAME AS subjectName
+			, SUBJECT.GRADE_TYPE AS gradeType
+			, CASE SUBJECT.GRADE_TYPE 
+				WHEN 1 THEN '절대평가' 
+       			ELSE '상대평가' END AS gradeTypeNAME
+			, SUBJECT.ATTENDANCE_SCORE_RATIO AS attendanceScoreRatio
+      		, SUBSTR(SUBJECT.SEMESTER, 1, 4) AS year
+		FROM 
+	      	TBL_SUBJECT SUBJECT, TBL_COLLEGE COLLEGE
+	    WHERE
+	      	SUBJECT.COLLEGE_ID = COLLEGE.COLLEGE_ID
+	    AND
+	    	SUBJECT.COLLEGE_ID = #{collegeId}
+	    AND
+	    	SUBJECT.SEMESTER = #{semester}
+	    AND
+	    	REPLACE(SUBJECT.SUBJECT_NAME, ' ', '') = REPLACE(#{subjectName},  ' ', '')
+	</select>
+	
+	
+	<update id="updateSubjectManagement" parameterType="subject">
+		UPDATE 
+			TBL_SUBJECT
+		SET
+			
+			COLLEGE_ID = #{collegeId, jdbcType=INTEGER}
+			, SEMESTER = #{semester, jdbcType=VARCHAR}
+			, SUBJECT_NAME = #{subjectName, jdbcType=VARCHAR}
+			, GRADE_TYPE = #{gradeType, jdbcType=INTEGER}
+			, ATTENDANCE_SCORE_RATIO = #{attendanceScoreRatio, jdbcType=INTEGER}
+			
+		WHERE
+			COLLEGE_ID = #{collegeId, jdbcType=INTEGER}
+		AND
+			SEMESTER = #{semester, jdbcType=VARCHAR}
+		AND
+			SUBJECT_NAME = #{subjectName, jdbcType=VARCHAR}
+			
+	</update>
+	
+</mapper>
