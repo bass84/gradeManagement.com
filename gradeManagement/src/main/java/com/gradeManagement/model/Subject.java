@@ -7,20 +7,20 @@ import org.apache.ibatis.type.Alias;
 @Alias("subject")
 public class Subject {
 
-	private int collegeId;
+	private Integer collegeId;
 	private String collegeName;
-	private int year;
+	private Integer year;
 	private String semester;
 	private String subjectName;
-	private int gradeType;
+	private Integer gradeType;
 	private String gradeTypeName;
-	private int attendanceScoreRatio;
-	
-	public int getCollegeId() {
+	private Integer attendanceScoreRatio;
+
+	public Integer getCollegeId() {
 		return collegeId;
 	}
 
-	public void setCollegeId(int collegeId) {
+	public void setCollegeId(Integer collegeId) {
 		this.collegeId = collegeId;
 	}
 
@@ -28,57 +28,71 @@ public class Subject {
 		return collegeName;
 	}
 
+
 	public void setCollegeName(String collegeName) {
 		this.collegeName = collegeName;
 	}
 
-	public int getYear() {
+
+	public Integer getYear() {
 		return year;
 	}
 
-	public void setYear(int year) {
+
+	public void setYear(Integer year) {
 		this.year = year;
 	}
+
 
 	public String getSemester() {
 		return semester;
 	}
 
+
 	public void setSemester(String semester) {
 		this.semester = semester;
 	}
+
 
 	public String getSubjectName() {
 		return subjectName;
 	}
 
+
 	public void setSubjectName(String subjectName) {
 		this.subjectName = subjectName;
 	}
 
-	public int getGradeType() {
+
+	public Integer getGradeType() {
 		return gradeType;
 	}
 
-	public void setGradeType(int gradeType) {
+
+	public void setGradeType(Integer gradeType) {
 		this.gradeType = gradeType;
 	}
+
 
 	public String getGradeTypeName() {
 		return gradeTypeName;
 	}
 
+
 	public void setGradeTypeName(String gradeTypeName) {
 		this.gradeTypeName = gradeTypeName;
 	}
 
-	public int getAttendanceScoreRatio() {
+
+	public Integer getAttendanceScoreRatio() {
 		return attendanceScoreRatio;
 	}
 
-	public void setAttendanceScoreRatio(int attendanceScoreRatio) {
+
+	public void setAttendanceScoreRatio(Integer attendanceScoreRatio) {
 		this.attendanceScoreRatio = attendanceScoreRatio;
 	}
+
 
 	@Override
 	public String toString() {

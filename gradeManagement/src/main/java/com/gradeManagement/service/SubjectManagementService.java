@@ -39,4 +39,17 @@ public class SubjectManagementService {
 		subjectManagementDao.updateSubjectManagement(subject);
 		
 	}
+	@Transactional
+	public boolean checkSubjectPkOverlap(Subject subject) {
+		
+		if(subject.getCollegeId() != 0 && subject.getYear() != 0 
+				&& !subject.getSemester().equals("0")  && !subject.getSubjectName().equals("")) {
+			subject.setSemester(subject.getYear() + subject.getSemester());
+			return subjectManagementDao.checkSubjectPkOverlap(subject) == 0  ? true : false;
+		}
+		else {
+			return true;
+		}
+		
+	}
 }

@@ -83,7 +83,21 @@
 			SEMESTER = #{semester, jdbcType=VARCHAR}
 		AND
 			SUBJECT_NAME = #{subjectName, jdbcType=VARCHAR}
-			
 	</update>
+	
+	
+	
+	<select id="checkSubjectPkOverlap" parameterType="subject" resultType="int">
+		SELECT
+			COUNT(*)
+		FROM
+			TBL_SUBJECT
+		WHERE
+			COLLEGE_ID = #{collegeId}
+		AND
+			SEMESTER = #{semester}
+		AND
+			REPLACE(SUBJECT_NAME, ' ', '') = REPLACE(#{subjectName}, ' ', '')
+	</select>
 	
 </mapper>

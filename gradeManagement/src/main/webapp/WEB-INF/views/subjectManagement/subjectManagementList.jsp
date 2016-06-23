@@ -4,9 +4,12 @@
 	$(document).ready(function() {
 		
 		var list = $("#subjectManagementDiv > table > tbody > tr");
+		
+		
+		
 		var gate = function(i) {
 			list[i].onclick = function() {
-				
+				//console.log($(list[i]).children().eq(3).html());
 				var subjectObject = {
 						"collegeId" : $("#collegeId" + i).val()
 						, "semester" : $("#semester" + i).val()
@@ -24,7 +27,7 @@
 						$("#semester").val(data.semester).attr("disabled", true);
 						$("#subjectName").val(data.subjectName).attr("disabled", true);
 						$("#attendanceScoreRatio").val(data.attendanceScoreRatio);
-						
+						$("#deleteSubjectManagementBtn").show();
 					}
 				});
 			}
@@ -34,14 +37,38 @@
 		}
 		
 		$("#addButton").click(function() {
-			$("#collegeId").val('1');
-			$("#year").val('');
-			$("#semester").val('1');
+			$("#collegeId").val('1').attr("disabled", false);
+			$("#year").val('').attr("disabled", false);
+			$("#semester").val('1').attr("disabled", false);
 			$("#gradeType").val('1');
-			$("#subjectName").val('');
+			$("#subjectName").val('').attr("disabled", false);
 			$("#attendanceScoreRatio").val('');
-			
-			
+			$("#deleteSubjectManagementBtn").hide();
+			$(".error").text('');
+		});
+		
+		$("#deleteSubjectManagementBtn").click(function() {
+			alert($("#collegeId").val());
+			if(window.confirm("정말 삭제하시겠습니까?")) {
+				$.ajax({
+					url : "${pageContext.request.contextPath}/subjectManagement/deleteSubjectManagement"
+					, method : "POST"
+					, data : {
+						"collegeId" : $("#collegeId").val()
+						, "semester" : $("#semester").val()
+						, "subjectName" : $("#subjectName").val()
+					}
+					, success: function(data) {
+						if(data) {
+							alert("정상 삭제 되었습니다.");
+							location.reload();
+						}
+						else {
+							alert("삭제가 되지 않았습니다.")
+						}
+					}
+				});
+			}
 		});
 		
 		$("#year").datepicker({
@@ -53,25 +80,89 @@
 			rules : {
 				year : {
 					required : true
-				},
-				className : {
+					, remote : {
+						method: "GET"
+						, url : "${pageContext.request.contextPath}/subjectManagement/checkSubjectPkOverlap"
+						, data : {
+							collegeId : function() {
+								return $("#collegeId").val() != '' || null ? $("#collegeId").val() : 0;
+							}
+							, year: function() {
+								return $("#year").val() != '' || null ? $("#year").val() : 0;
+							}
+							, semester : function() {
+								return $("#semester").val() != '' || null ? $("#semester").val() : 0;
+							}
+							, subjectName : function() {
+								return $("#subjectName").val() != '' || null ? $("#subjectName").val() : '';
+							}
+						}
+					}
+				}
+				, semester : {
 					required : true
-				},
-				attendanceScoreRatio : {
-					required : true,
-					number : true
+					, remote : {
+						method: "GET"
+						, url : "${pageContext.request.contextPath}/subjectManagement/checkSubjectPkOverlap"
+						, data : {
+							collegeId : function() {
+								return $("#collegeId").val() != '' || null ? $("#collegeId").val() : 0;
+							}
+							, year: function() {
+								return $("#year").val() != '' || null ? $("#year").val() : 0;
+							}
+							, semester : function() {
+								return $("#semester").val() != '' || null ? $("#semester").val() : 0;
+							}
+							, subjectName : function() {
+								return $("#subjectName").val() != '' || null ? $("#subjectName").val() : '';
+							}
+						}
+					}
+				}
+				, subjectName : {
+					required : true
+					, remote : {
+						method: "GET"
+						, url : "${pageContext.request.contextPath}/subjectManagement/checkSubjectPkOverlap"
+						, data : {
+							collegeId : function() {
+								return $("#collegeId").val() != '' || null ? $("#collegeId").val() : 0;
+							}
+							, year: function() {
+								return $("#year").val() != '' || null ? $("#year").val() : 0;
+							}
+							, semester : function() {
+								return $("#semester").val() != '' || null ? $("#semester").val() : 0;
+							}
+							, subjectName : function() {
+								return $("#subjectName").val() != '' || null ? $("#subjectName").val() : '';
+							}
+						}
+						
+					}
+				}
+				, attendanceScoreRatio : {
+					required : true
+					, number : true
 				}
 			},
 			messages: {
 				year : {
 					required: "연도를 입력하세요."
+					, remote: "존재하는 과목입니다."
 				},
-				className : {
+				semester : {
+					required: "연도를 입력하세요."
+					, remote: "존재하는 과목입니다."
+				},
+				subjectName : {
 					required: "수업이름을 입력하세요."
+					, remote: "존재하는 과목입니다."
 				},
 				attendanceScoreRatio : {
-					required : "출결점수 비율을 입력하세요.",
-					number : "숫자만 입력하세요."
+					required : "출결점수 비율을 입력하세요."
+					, number : "존재하는 과목입니다."
 				}
 			},
 			submitHandler: function() {
@@ -125,8 +216,8 @@
                                 <th>학교이름</th>
                                 <th>연도구분</th>
                                 <th>학기구분</th>
-                                <th>학점정보</th>
                                 <th>과목이름</th>
+                                <th>학점정보</th>
                                 <th>출결점수비율</th>
                             </tr>
                         </thead>
@@ -146,10 +237,9 @@
 				                        	<td><b>${list.collegeName}<input type="hidden" id="collegeId${i.index}" value="${list.collegeId}"/></b></td>
 				                        	<td><b>${list.year}년</b></td>
 				                        	<td><b>${list.semester}학기<input type="hidden" id="semester${i.index}" value="${list.year}${list.semester}"/></b></td>
-				                        	<td><b>${list.gradeTypeName}</b></td>
 				                        	<td><b>${list.subjectName}<input type="hidden" id="subjectName${i.index}" value="${list.subjectName}"/></b></td>
+				                        	<td><b>${list.gradeTypeName}</b></td>
 				                        	<td><b>${list.attendanceScoreRatio}%</b></td>
-				                        
 				                        </tr>
 			                        </c:forEach>
 		                        </c:otherwise>
@@ -183,7 +273,7 @@
 					                            <tr class="odd gradeX">
 					                            	<th style="width:40%; text-align:center">연도구분</th>
 					                            	<td><input type="text" class="form-control" placeholder="연도를 입력하세요." 
-					                            	id="year" name="year" style="text-align:center; display:inline; width:90%; margin-right:10px;"/>년</td>
+					                            	id="year" name="year" style="text-align:center;"/></td>
 					                            </tr>
 					                            <tr class="odd gradeX">
 					                            	<th style="width:40%; text-align:center">학기구분</th>
@@ -195,6 +285,10 @@
 					                            	</td>
 					                            </tr>
 					                            <tr class="odd gradeX">
+					                            	<th style="width:40%; text-align:center">과목이름</th>
+					                            	<td><input type="text" id="subjectName" name="subjectName" class="form-control" placeholder="과목 이름을 입력하세요." style="text-align:center;"/></td>
+					                            </tr>
+					                            <tr class="odd gradeX">
 					                            	<th style="width:40%; text-align:center">학점정보</th>
 					                            	<td>
 					                            		<select class="form-control" id="gradeType" name="gradeType">
@@ -204,20 +298,17 @@
 					                            	</td>
 					                            </tr>
 					                            <tr class="odd gradeX">
-					                            	<th style="width:40%; text-align:center">과목이름</th>
-					                            	<td><input type="text" id="subjectName" name="subjectName" class="form-control" placeholder="과목 이름을 입력하세요." style="text-align:center;"/></td>
-					                            </tr>
-					                            <tr class="odd gradeX">
 					                            	<th style="width:40%; text-align:center">출결점수 비율</th>
 					                            	<td style="margin-right:0px;"><input type="text" id="attendanceScoreRatio" name="attendanceScoreRatio" class="form-control" placeholder="100점 만점 출결점수를 입력하세요." 
-					                            	style="text-align:center; display:inline; width:90%; margin-right:10px;"/>%</td>
+					                            	style="text-align:center;"/></td>
 					                            </tr>
 					                        </tbody>
 	                                    </table>
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-default" data-dismiss="modal">취소</button>
-                                    <input type="submit" class="btn btn-primary" id="addButton" value="저장"/>
+                                    <button type="button" class="btn btn-danger" id="deleteSubjectManagementBtn">삭제</button>
+                                    <input type="submit" class="btn btn-primary" id="addSubjectManagementBtn" value="저장"/>
                                 </div>
                             </div>
                             <!-- /.modal-content -->

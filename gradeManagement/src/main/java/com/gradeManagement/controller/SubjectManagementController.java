@@ -46,8 +46,20 @@ public class SubjectManagementController {
 	
 	@RequestMapping(value="/updateSubjectManagement", method=RequestMethod.POST)
 	public String updateSubManagement(Subject subject) {
-		logger.info("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$" + subject);
 		subjectManagementService.updateSubjectManagement(subject);
 		return "redirect:getSubjectManagementList";
+	}
+	
+	@RequestMapping(value="/checkSubjectPkOverlap", method=RequestMethod.GET)
+	@ResponseBody
+	public boolean checkSubjectPkOverlap(Subject subject) {
+		boolean checkResult = subjectManagementService.checkSubjectPkOverlap(subject);
+		return checkResult;
+	}
+	
+	@RequestMapping(value="/deleteSubjectManagement", method=RequestMethod.POST)
+	@ResponseBody
+	public boolean deleteSubjectManagement(Subject subject) {
+		return false;
 	}
 }
