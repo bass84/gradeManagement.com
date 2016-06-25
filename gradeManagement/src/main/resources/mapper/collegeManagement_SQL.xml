@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="collegeManagementDao">
+	
+	<select id="getCollegeManagementList" resultType="college">
+		SELECT 
+			COLLEGE_ID AS collegeId
+			, COLLEGE_NAME AS collegeName
+		FROM
+			TBL_COLLEGE
+	</select>
+
+	<insert id="addCollegeManagement" parameterType="college">
+		INSERT INTO TBL_COLLEGE
+			(
+				COLLEGE_ID
+				, COLLEGE_NAME
+			)
+		VALUES
+			(
+				COLLEGE_SEQ.NEXTVAL
+				, #{collegeName, jdbcType=VARCHAR}
+			)
+	</insert>
+	
+	<select id="checkCollegePkOverlap" parameterType="college" resultType="int">
+		SELECT
+			COUNT(*)
+		FROM
+			TBL_COLLEGE
+		WHERE
+			REPLACE(COLLEGE_NAME, ' ', '') = REPLACE(#{collegeName}, ' ', '')
+	</select>
+</mapper>

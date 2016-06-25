@@ -27,7 +27,6 @@ public class SubjectManagementController {
 		List<Subject> subjectManagementList =  subjectManagementService.getSubjectManagementList();
 		modelMap.addAttribute("headTitle", "수업관리");
 		modelMap.addAttribute("subjectManagementList", subjectManagementList);
-		modelMap.addAttribute("listLength", subjectManagementList.size());
 		return "/subjectManagement/subjectManagementList";
 	}
 	

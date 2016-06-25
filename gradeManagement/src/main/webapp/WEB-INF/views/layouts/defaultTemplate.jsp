@@ -38,10 +38,10 @@
 	
 	<div id="wrapper">
 		
-		<div id="left">
+		<div id="left" class="navbar-default sidebar" role="navigation">
 	  		<tiles:insertAttribute name="left" />
 	  	</div>
-	  	<div id="content">
+	  	<div id="content" style="margin-left:251px;">
 	  		<tiles:insertAttribute name="content" />
 	  	</div>
 	  

@@ -8,23 +8,28 @@ import org.apache.ibatis.type.Alias;
 public class College {
 
 	private int collegeId;
-	private String collgedName;
-
+	private String collegeName;
+	
+	
 	public int getCollegeId() {
 		return collegeId;
 	}
+
 
 	public void setCollegeId(int collegeId) {
 		this.collegeId = collegeId;
 	}
 
-	public String getCollgedName() {
-		return collgedName;
+
+	public String getCollegeName() {
+		return collegeName;
 	}
 
-	public void setCollgedName(String collgedName) {
-		this.collgedName = collgedName;
+
+	public void setCollegeName(String collegeName) {
+		this.collegeName = collegeName;
 	}
+
 
 	@Override
 	public String toString() {
