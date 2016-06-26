@@ -37,7 +37,7 @@
 		}
 		
 		$("#addButton").click(function() {
-			$("#collegeId").val('1').attr("disabled", false);
+			$("#collegeId").attr("disabled", false);
 			$("#year").val('').attr("disabled", false);
 			$("#semester").val('1').attr("disabled", false);
 			$("#gradeType").val('1');
@@ -277,8 +277,9 @@
 	                	<th style="width:40%; text-align:center; vertical-align:middle;">학교이름</th>
 	                	<td>
 	                		<select class="form-control" id="collegeId" name="collegeId">
-	                			<option value="1">충청대</option>
-	                			<option value="2">상명대</option>
+		                		<c:forEach var="collegeList" items="${collegeList}">
+		                			<option value="${collegeList.collegeId}">${collegeList.collegeName}</option>
+		                		</c:forEach>
 	                		</select>
 	                	</td>
 	                </tr>

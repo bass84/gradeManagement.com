@@ -102,7 +102,7 @@ $(document).ready(function() {
    	});
 	$(".col-sm-6").eq(1).css("text-align", "right");
 	$(".col-sm-6").eq(3).css("text-align", "left");
-	$(".col-sm-6").eq(2).css("width", "42%");
+	$(".col-sm-6").eq(2).css("width", "32%");
 	
 
 });
@@ -118,12 +118,12 @@ $(document).ready(function() {
 	            DataTables Advanced Tables
 	        </div>
                      <!-- /.panel-heading -->
-            <div class="panel-body" style="padding-left:300px; padding-right:300px;">
+            <div class="panel-body" style="padding-left:20%; padding-right:20%;">
                 <div class="dataTable_wrapper" id="collegeManagementDiv">
                     <table class="table table-striped table-bordered table-hover" id="collegeManagementTable">
                         <thead>
                             <tr>
-                                <th style="text-align:center; font-size:17px; font-weight:bold">학교아이디</th>
+                                <th style="text-align:center; font-size:17px; font-weight:bold">학교ID</th>
                                 <th style="text-align:center; font-size:17px; font-weight:bold">학교이름</th>
                             </tr>
                         </thead>

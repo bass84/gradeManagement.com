@@ -10,7 +10,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.gradeManagement.model.College;
 import com.gradeManagement.model.Subject;
+import com.gradeManagement.service.CollegeManagementService;
 import com.gradeManagement.service.SubjectManagementService;
 
 @Controller
@@ -22,11 +24,16 @@ public class SubjectManagementController {
 	@Autowired
 	private SubjectManagementService subjectManagementService;
 	
+	@Autowired
+	private CollegeManagementService collegeManagementService;
+	
 	@RequestMapping(value="/getSubjectManagementList", method=RequestMethod.GET)
 	public String getSubjectManagementList(ModelMap modelMap) {
 		List<Subject> subjectManagementList =  subjectManagementService.getSubjectManagementList();
+		List<College> collegeList = collegeManagementService.getCollegeManagementList();
 		modelMap.addAttribute("headTitle", "수업관리");
 		modelMap.addAttribute("subjectManagementList", subjectManagementList);
+		modelMap.addAttribute("collegeList", collegeList);
 		return "/subjectManagement/subjectManagementList";
 	}
 	
