@@ -19,4 +19,16 @@ public class StudentManagementDao {
 		return sqlSessionTemplate.selectList("studentManagementDao.getStudentManagementList", college);
 	}
 
+	public void addStudent(Student student) {
+		sqlSessionTemplate.insert("studentManagementDao.addStudent", student);
+	}
+
+	public Student getStudent(Student student) {
+		return sqlSessionTemplate.selectOne("studentManagementDao.getStudent", student);
+	}
+
+	public int checkStudentPkOverlap(Student student) {
+		return sqlSessionTemplate.selectOne("studentManagementDao.checkStudentPkOverlap", student);
+	}
+
 }

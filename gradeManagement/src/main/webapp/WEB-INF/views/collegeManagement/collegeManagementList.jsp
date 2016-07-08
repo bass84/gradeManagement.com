@@ -129,14 +129,14 @@ $(document).ready(function() {
                         </thead>
                         <tbody>
 	                        <c:choose>
-	                        	<c:when test="${fn:length(collegeManagementList) == 0}">
+	                        	<c:when test="${fn:length(collegeList) == 0}">
 		                            <tr class="odd gradeX" >
 		                                <td colspan="6" style="height:200px; text-align:center; vertical-align:middle;">데이터가 없습니다.</td>
 		                                
 		                            </tr>
 		                        </c:when>
 		                        <c:otherwise>
-		                        	<c:forEach items="${collegeManagementList}" var="list" varStatus="i">
+		                        	<c:forEach items="${collegeList}" var="list" varStatus="i">
 				                        <tr class="odd gradeX" id="collegeManagementListContent${i.index}" style="text-align:center;" 
 				                        	data-toggle="modal" data-target="#addCollegeManagementModal">
 				                        	

@@ -12,4 +12,41 @@
 		WHERE
 			COLLEGE_ID = #{collegeId}
 	</select>
+	
+	<insert id="addStudent" parameterType="student">
+		INSERT INTO TBL_STUDENT
+			(
+				STUDENT_ID
+				, STUDENT_NAME
+				, COLLEGE_ID
+			)
+		VALUES
+			(
+				#{studentId, jdbcType=INTEGER}
+				, #{studentName, jdbcType=VARCHAR}
+				, #{collegeId, jdbcType=INTEGER}
+			)
+	</insert>
+	
+	<select id="getStudent" parameterType="student" resultType="student">
+		SELECT
+			STUDENT_ID AS studentId
+			, STUDENT_NAME AS studentName
+			, COLLEGE_ID AS collegeId
+		FROM
+			TBL_STUDENT
+		WHERE
+			STUDENT_ID = #{studentId}
+	</select>
+	
+	<select id="checkStudentPkOverlap" parameterType="student" resultType="int">
+		SELECT
+			COUNT(*)
+		FROM
+			TBL_STUDENT
+		WHERE
+			STUDENT_ID = #{studentId}
+		AND
+			COLLEGE_ID = #{collegeId}
+	</select>
 </mapper>

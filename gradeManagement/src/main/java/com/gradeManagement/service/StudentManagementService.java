@@ -22,4 +22,19 @@ public class StudentManagementService {
 		return studentManagementDao.getStudentManagementList(college);
 	}
 
+	public void addStudent(Student student, College college) {
+		student.setCollegeId(college.getCollegeId());
+		studentManagementDao.addStudent(student);
+		
+	}
+
+	public Student getStudent(Student student) {
+		return studentManagementDao.getStudent(student);
+	}
+
+	public boolean checkStudentPkOverlap(Student student) {
+		int checkCount = studentManagementDao.checkStudentPkOverlap(student);
+		return checkCount > 0 ? false : true;
+	}
+
 }

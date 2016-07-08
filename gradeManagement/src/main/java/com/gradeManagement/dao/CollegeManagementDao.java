@@ -29,4 +29,8 @@ public class CollegeManagementDao {
 	public int checkCollegePkOverlap(College college) {
 		return sqlSessionTemplate.selectOne("collegeManagementDao.checkCollegePkOverlap", college);
 	}
+
+	public College getCollege(College college) {
+		return sqlSessionTemplate.selectOne("collegeManagementDao.getCollege", college);
+	}
 }

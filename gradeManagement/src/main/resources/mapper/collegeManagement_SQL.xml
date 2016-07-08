@@ -32,4 +32,13 @@
 		WHERE
 			REPLACE(COLLEGE_NAME, ' ', '') = REPLACE(#{collegeName}, ' ', '')
 	</select>
+	
+	<select id="getCollege" parameterType="college" resultType="college">
+		SELECT
+			*
+		FROM
+			TBL_COLLEGE
+		WHERE
+			COLLEGE_ID = #{collegeId}
+	</select>
 </mapper>

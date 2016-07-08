@@ -11,17 +11,37 @@ $(document).ready(function() {
 		var gate = function(i) {
 			list[i].onclick = function() {
 				var studentObject = {
-						"studentName" : $("#studentName" + i).val()
+						"studentId" : $("#studentId" + i).val()
 				}
 				
 				$.ajax({
 					url: "${pageContext.request.contextPath}/studentManagement/getStudentManagement"
 					, method: "GET"
 					, data: studentObject
+					, async: false
 					, success: function(data) {
 						$("#studentManagementForm").attr("action", "${pageContext.request.contextPath}/studentManagement/updateStudentManagement");
-						$("#studentName").val(data.studentName).attr("disabled", true);
+						$("#studentName").val(data.studentName);
+						$("#studentId").val(data.studentId).attr("readonly", true);
 						$("#deleteStudentManagementBtn").show();
+						$(".error").text('');
+						var collegeTr = $("#addStudentManagementTable > tbody > tr").eq(0);
+						collegeTr.remove();
+						
+						
+						$("#addStudentManagementTable > tbody").prepend(
+							'<tr class="odd gradeX">'
+		                		+ '<th style="width:40%; text-align:center; vertical-align:middle">학교이름</th>'
+				             	+ '<td>'
+				             		+ '<select id="collegeId${i.index}" class="form-control">'
+										+ '<c:forEach var="college" items="${collegeList}" varStatus="i">'
+					             			+ '<option value="${college.collegeId}">${college.collegeName}</option>'
+										+ '</c:forEach>'
+				             		+ '</select>'
+			             		+ '</td>'
+			               	+ '</tr>'
+						);
+						
 					}
 				});
 			}
@@ -33,8 +53,23 @@ $(document).ready(function() {
 	
 	
 	$("#addButton").click(function() {
-		$("#studentName").val('').attr("disabled", false);
+		$("#studentName").val('').attr("readonly", false);
+		$("#studentId").val('').attr("readonly", false);
 		$("#deleteStudentManagementBtn").hide();
+		var collegeTr = $("#addStudentManagementTable > tbody > tr").eq(0);
+		collegeTr.remove();
+		
+		$("#addStudentManagementTable > tbody").prepend(
+				'<tr class="odd gradeX">'
+            		+ '<th style="width:40%; text-align:center; vertical-align:middle">학교이름</th>'
+	             	+ '<td>'
+	             		+ '<select id="collegeId" name="collegeId" class="form-control">'
+	             			+ '<option value="${college.collegeId}">${college.collegeName}</option>'
+	             		+ '</select>'
+             		+ '</td>'
+               	+ '</tr>'
+		);
+		$("#studentManagementForm").attr("action", "${pageContext.request.contextPath}/studentManagement/addStudent");
 		$(".error").text('');
 	});
 	
@@ -61,26 +96,47 @@ $(document).ready(function() {
 	
 	$("#studentManagementForm").validate({
 		rules : {
-			studentId : {
+			collegeId : {
 				required : true
-				/* , remote : {
+				, remote : {
 					method: "GET"
 					, url : "${pageContext.request.contextPath}/studentManagement/checkStudentPkOverlap"
 					, data : {
-						studentName : function() {
-							return $("#studentName").val() != '' || null ? $("#studentName").val() : '';
+						studentId : function() {
+							return $("#studentId").val() != '' || null ? $("#studentId").val() : 0;
+						},
+						collegeId : function() {
+							return $("#collegeId").val() != '' || null ? $("#collegeId").val() : 0;
 						}
 					}
-				} */
+				}
 			}
-			
+			, studentId : {
+				required : true
+				, remote : {
+					method: "GET"
+					, url : "${pageContext.request.contextPath}/studentManagement/checkStudentPkOverlap"
+					, data : {
+						studentId : function() {
+							return $("#studentId").val() != '' || null ? $("#studentId").val() : 0;
+						},
+						collegeId : function() {
+							return $("#collegeId").val() != '' || null ? $("#collegeId").val() : 0;
+						}
+					}
+				}
+			}
 			
 		},
 		messages: {
 			studentId : {
 				required: "학번을 입력하세요."
-				//, remote: "존재하는 학번입니다."
-			},
+				, remote: "존재하는 학번입니다."
+			}
+			, collegeId : {
+				remote: "존재하는 학번입니다."
+			}
+			
 			
 		},
 		submitHandler: function() {
@@ -99,9 +155,9 @@ $(document).ready(function() {
 	$('#studentManagementTable').DataTable({
            responsive: true
    	});
-/* 	$(".col-sm-6").eq(1).css("text-align", "right");
+ 	$(".col-sm-6").eq(1).css("text-align", "right");
 	$(".col-sm-6").eq(3).css("text-align", "left");
-	$(".col-sm-6").eq(2).css("width", "32%"); */
+	$(".col-sm-6").eq(2).css("width", "39%");
 	
 
 });
@@ -164,7 +220,8 @@ $(document).ready(function() {
 
 
 <div class="modal fade" id="addStudentManagementModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <form id="studentManagementForm" action="${pageContext.request.contextPath}/studentManagement/addStudentManagement" method="POST">
+    <form id="studentManagementForm" action="${pageContext.request.contextPath}/studentManagement/addStudent" method="POST">
+    	<%-- <input type="hidden" name="collegeId" value="${college.collegeId}"/> --%>
 	    <div class="modal-dialog">
 	        <div class="modal-content">
 	            <div class="modal-header">
@@ -177,7 +234,7 @@ $(document).ready(function() {
 			                <tr class="odd gradeX">
 			                	<th style="width:40%; text-align:center; vertical-align:middle">학교이름</th>
 				             	<td>
-				             		<select id="collegeId" name="collegeId">
+				             		<select id="collegeId" name="collegeId" class="form-control">
 				             			<option value="${college.collegeId}">${college.collegeName}</option>
 				             		</select>
 				             	</td>

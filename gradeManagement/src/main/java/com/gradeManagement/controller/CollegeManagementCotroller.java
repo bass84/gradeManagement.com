@@ -26,7 +26,7 @@ public class CollegeManagementCotroller {
 	public String getCollegeManagementList(ModelMap modelMap, College college) {
 		List<College> collegeManagementList =  collegeManagementService.getCollegeManagementList();
 		modelMap.addAttribute("headTitle", "학교관리");
-		modelMap.addAttribute("collegeManagementList", collegeManagementList);
+		modelMap.addAttribute("collegeList", collegeManagementList);
 		
 		return "/collegeManagement/collegeManagementList";
 	}

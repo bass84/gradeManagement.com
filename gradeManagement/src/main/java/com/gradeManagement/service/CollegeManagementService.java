@@ -2,6 +2,7 @@ package com.gradeManagement.service;
 
 import java.util.List;
 
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,6 +14,8 @@ import com.gradeManagement.model.College;
 public class CollegeManagementService {
 
 	Logger logger = Logger.getLogger(this.getClass());
+	
+	public List<College> collegeList;
 	
 	@Autowired
 	private CollegeManagementDao collegeManagementDao;
@@ -30,4 +33,11 @@ public class CollegeManagementService {
 			
 		return checkResult;
 	}
+
+	public College getCollege(College college) {
+		
+		return collegeManagementDao.getCollege(college);
+	}
+	
+	
 }

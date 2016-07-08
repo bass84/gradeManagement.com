@@ -18,7 +18,7 @@
 	        <ul class="nav nav-second-level">
 	            <c:forEach var="collegeList" items="${collegeList}">
 		            <li>
-		                <a href="${pageContext.request.contextPath}/studentManagement/getStudentManagementList?collegeId=${collegeList.collegeId}&collegeName=${collegeList.collegeName}">
+		                <a href="${pageContext.request.contextPath}/studentManagement/getStudentManagementList?collegeId=${collegeList.collegeId}">
 		                ${collegeList.collegeName}
 		                </a>
 		            </li>
@@ -27,7 +27,7 @@
 	    </li>
         <li>
             <a href="${pageContext.request.contextPath}/subjectManagement/getSubjectManagementList">
-            	<i class="fa fa-folder"></i> 
+            	<i class="fa fa-folder"></i>
             	수업관리
            	</a>
         </li>
