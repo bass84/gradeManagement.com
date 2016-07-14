@@ -5,15 +5,18 @@
 		
 		var list = $("#subjectTbody > tr");
 		
-		for(var i = 0; i < list.length; i++) {
+		var gate = function(i) {
 			list[i].onclick = function() {
 				var collegeId = $("#collegeId" + i).val();
 				var semester = $("#semester" + i).val();
 				var subjectName = $("#subjectName" + i).val();
 				location.href = "${pageContext.request.contextPath}/management/getManagementView?collegeId=" + collegeId
 						+ "&semester=" + semester + "&subjectName=" + subjectName;
-				
 			}
+		}
+		
+		for(var i = 0; i < list.length; i++) {
+			gate(i);
 		}
 		
 		$("#year").datepicker({
@@ -126,10 +129,10 @@
                         </thead>
                         <tbody id="subjectTbody">
                         	<c:forEach items="${subjectListUseY}" var="list" varStatus="i">
-	                            <tr class="odd gradeX" id="">
-	                            	<input type="hidden" id="collegeId${i.count}" value="${list.collegeId}"/>
-	                            	<input type="hidden" id="semester${i.count}" value="${list.year}${list.semester}"/>
-	                            	<input type="hidden" id="subjectName${i.count}" value="${list.subjectName}"/>
+	                            <tr class="odd gradeX">
+	                            	<input type="hidden" id="collegeId${i.index}" value="${list.collegeId}"/>
+	                            	<input type="hidden" id="semester${i.index}" value="${list.year}${list.semester}"/>
+	                            	<input type="hidden" id="subjectName${i.index}" value="${list.subjectName}"/>
 	                                <td style="text-align:center">${list.collegeName}</td>
 	                                <td style="text-align:center">${list.year}</td>
 	                                <td style="text-align:center">${list.semester}</td>

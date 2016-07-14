@@ -1,5 +1,7 @@
 package com.gradeManagement.controller;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.gradeManagement.model.College;
@@ -89,9 +92,9 @@ public class GradeManagementController {
 	}
 	
 	@RequestMapping(value="/addStudentForCourses", method = RequestMethod.POST)
-	public String addStudentForCourses(Courses courses, String student) {
+	public String addStudentForCourses(Courses courses, String student, @RequestParam String subjectName) throws UnsupportedEncodingException {
 		gradeManagementService.addStudentForCourses(courses, student);
-		String urlParam = "?collegeId=" + courses.getCollegeId() + "&semester=" + courses.getSemester() + "&subjectName=" + courses.getSubjectName();
+		String urlParam = "?collegeId=" + courses.getCollegeId() + "&semester=" + courses.getSemester() + "&subjectName=" + URLEncoder.encode(courses.getSubjectName(), "UTF-8");
 		return "redirect:getManagementView" + urlParam;
 	}
 	

@@ -3,7 +3,6 @@
 <script type="text/javascript">
 	$(document).on("ready", function() {
 		var attendanceScoreRatio = ${subject.attendanceScoreRatio};
-		var courses = $("#subjectTbody > tr");
 		
 		$(document)
 			.on("click", "#studentRegistButton", function() {
@@ -92,8 +91,8 @@
 						$(buttons[i]).hide();
 					}
 					$("#buttons").append('<button id="addScoreButton" class="btn btn-primary btn-lg">등록</button>');
-					//var courses = $("#subjectTbody > tr");
-					for(var i = 0; i < courses.length; i++) {
+					var courses = $("#subjectTbody > tr");
+					var gate = function(i) {
 						var attendance = $(courses[i]).find("td").eq(4).text();
 						var attendanceScore = $(courses[i]).find("td").eq(5).text();
 						var midtermExamScore = $(courses[i]).find("td").eq(6).text();
@@ -115,10 +114,13 @@
 							.append('<input type="text" class="form-control" readonly id="totalScore' + i + '" value="' + totalScore + '" style="text-align:center;"/>');
 						
 						$("#attendance" + i).keyup(function() {
-							var index = $(this).attr("id").substr(10);
-							$("#attendanceScore" + index).val($(this).val());
-						})
+							//var index = $(this).attr("id").substr(10);
+							$("#attendanceScore" + i).val(attendanceScoreRatio - (((15 - $(this).val()) * 2/15) * attendanceScoreRatio));
+						});
 						
+					}
+					for(var i = 0; i < courses.length; i++) {
+						gate(i);
 					}
 					
 					
@@ -166,7 +168,7 @@
 	                        	<c:choose>
 		                        	<c:when test="${fn:length(courseList) == 0}">
 		                        		<tr class="odd gradeX">
-		                        			<td colspan="9" style="height:200px; text-align:center; vertical-align:middle;">
+		                        			<td colspan="10" style="height:200px; text-align:center; vertical-align:middle;">
 		                        				<font size="100">등록된 학생이 없습니다.</font>
 		                        			</td>
 		                        		</tr>
