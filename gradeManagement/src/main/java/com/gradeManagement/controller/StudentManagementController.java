@@ -65,5 +65,12 @@ public class StudentManagementController {
 		return checkResult;
 	}
 	
+	@RequestMapping(value="deleteStudent", method=RequestMethod.POST)
+	@ResponseBody
+	public boolean deleteStudent(Student student) {
+		boolean deleteResult = studentManagementService.deleteStudent(student);
+		return deleteResult;
+	}
+	
 
 }

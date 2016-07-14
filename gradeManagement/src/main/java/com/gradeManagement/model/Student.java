@@ -10,6 +10,7 @@ public class Student {
 	private int studentId;
 	private String StudentName;
 	private int collegeId;
+	private int grade;
 	
 	public int getStudentId() {
 		return studentId;
@@ -28,6 +29,12 @@ public class Student {
 	}
 	public void setCollegeId(int collegeId) {
 		this.collegeId = collegeId;
+	}
+	public int getGrade() {
+		return grade;
+	}
+	public void setGrade(int grade) {
+		this.grade = grade;
 	}
 	@Override
 	public String toString() {

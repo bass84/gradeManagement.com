@@ -15,6 +15,7 @@ public class Subject {
 	private Integer gradeType;
 	private String gradeTypeName;
 	private Integer attendanceScoreRatio;
+	private String useYn;
 
 	public Integer getCollegeId() {
 		return collegeId;
@@ -92,7 +93,16 @@ public class Subject {
 	public void setAttendanceScoreRatio(Integer attendanceScoreRatio) {
 		this.attendanceScoreRatio = attendanceScoreRatio;
 	}
+	
+	
+	public String getUseYn() {
+		return useYn;
+	}
 
+	
+	public void setUseYn(String useYn) {
+		this.useYn = useYn;
+	}
 
 	@Override
 	public String toString() {

@@ -34,6 +34,7 @@
        			ELSE '상대평가' END AS gradeTypeNAME
 			, SUBJECT.ATTENDANCE_SCORE_RATIO AS attendanceScoreRatio
       		, SUBSTR(SUBJECT.SEMESTER, 1, 4) AS year
+      		, USE_YN AS useYn
 		FROM 
 	      	TBL_SUBJECT SUBJECT, TBL_COLLEGE COLLEGE
 	    WHERE
@@ -53,6 +54,7 @@
        			ELSE '상대평가' END AS gradeTypeNAME
 			, SUBJECT.ATTENDANCE_SCORE_RATIO AS attendanceScoreRatio
       		, SUBSTR(SUBJECT.SEMESTER, 1, 4) AS year
+      		, USE_YN AS useYn
 		FROM 
 	      	TBL_SUBJECT SUBJECT, TBL_COLLEGE COLLEGE
 	    WHERE
@@ -100,4 +102,5 @@
 			REPLACE(SUBJECT_NAME, ' ', '') = REPLACE(#{subjectName}, ' ', '')
 	</select>
 	
+		
 </mapper>

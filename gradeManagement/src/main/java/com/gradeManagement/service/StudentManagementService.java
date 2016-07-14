@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.gradeManagement.dao.StudentManagementDao;
 import com.gradeManagement.model.College;
 import com.gradeManagement.model.Student;
+import com.gradeManagement.model.Subject;
 
 @Service("studentManagementService")
 public class StudentManagementService {
@@ -25,7 +26,6 @@ public class StudentManagementService {
 	public void addStudent(Student student, College college) {
 		student.setCollegeId(college.getCollegeId());
 		studentManagementDao.addStudent(student);
-		
 	}
 
 	public Student getStudent(Student student) {
@@ -35,6 +35,15 @@ public class StudentManagementService {
 	public boolean checkStudentPkOverlap(Student student) {
 		int checkCount = studentManagementDao.checkStudentPkOverlap(student);
 		return checkCount > 0 ? false : true;
+	}
+
+	public boolean deleteStudent(Student student) {
+		int deleteResult = studentManagementDao.deleteStudent(student);
+		return deleteResult > 0 ? true : false;
+	}
+
+	public List<Student> getStudentInCourseList(Subject subject) {
+		return studentManagementDao.getStudentInCourseList(subject);
 	}
 
 }

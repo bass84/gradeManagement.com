@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import com.gradeManagement.model.College;
 import com.gradeManagement.model.Student;
+import com.gradeManagement.model.Subject;
 
 @Repository("studentManagementDao")
 public class StudentManagementDao {
@@ -29,6 +30,14 @@ public class StudentManagementDao {
 
 	public int checkStudentPkOverlap(Student student) {
 		return sqlSessionTemplate.selectOne("studentManagementDao.checkStudentPkOverlap", student);
+	}
+
+	public int deleteStudent(Student student) {
+		return sqlSessionTemplate.delete("studentManagementDao.deleteStudent", student);
+	}
+
+	public List<Student> getStudentInCourseList(Subject subject) {
+		return sqlSessionTemplate.selectList("studentManagementDao.getStudentInCourseList", subject);
 	}
 
 }

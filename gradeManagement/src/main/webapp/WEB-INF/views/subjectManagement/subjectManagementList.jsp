@@ -5,8 +5,6 @@
 		
 		var list = $("#subjectManagementDiv > table > tbody > tr");
 		
-		
-		
 		var gate = function(i) {
 			list[i].onclick = function() {
 				//console.log($(list[i]).children().eq(3).html());
@@ -25,7 +23,7 @@
 						$("#collegeId").val(data.collegeId).attr("disabled", true);
 						$("#year").val(data.year).attr("disabled", true);
 						$("#semester").val(data.semester).attr("disabled", true);
-						$("#subjectName").val(data.subjectName).attr("disabled", true);
+						$("#subjectName").val(data.subjectName).attr("readonly", true);
 						$("#attendanceScoreRatio").val(data.attendanceScoreRatio);
 						$("#deleteSubjectManagementBtn").show();
 					}
@@ -41,7 +39,7 @@
 			$("#year").val('').attr("disabled", false);
 			$("#semester").val('1').attr("disabled", false);
 			$("#gradeType").val('1');
-			$("#subjectName").val('').attr("disabled", false);
+			$("#subjectName").val('').attr("readonly", false);
 			$("#attendanceScoreRatio").val('');
 			$("#deleteSubjectManagementBtn").hide();
 			$(".error").text('');

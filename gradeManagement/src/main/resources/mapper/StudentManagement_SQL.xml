@@ -7,6 +7,7 @@
 			STUDENT_ID AS studentId
 			, STUDENT_NAME AS studentName
 			, COLLEGE_ID AS collegeId
+			, Grade AS grade
 		FROM
 			TBL_STUDENT
 		WHERE
@@ -19,12 +20,14 @@
 				STUDENT_ID
 				, STUDENT_NAME
 				, COLLEGE_ID
+				, GRADE
 			)
 		VALUES
 			(
 				#{studentId, jdbcType=INTEGER}
 				, #{studentName, jdbcType=VARCHAR}
 				, #{collegeId, jdbcType=INTEGER}
+				, #{grade, jdbcType=INTEGER}
 			)
 	</insert>
 	
@@ -33,6 +36,7 @@
 			STUDENT_ID AS studentId
 			, STUDENT_NAME AS studentName
 			, COLLEGE_ID AS collegeId
+			, GRADE AS grade
 		FROM
 			TBL_STUDENT
 		WHERE
@@ -48,5 +52,39 @@
 			STUDENT_ID = #{studentId}
 		AND
 			COLLEGE_ID = #{collegeId}
+	</select>
+	
+	<delete id="deleteStudent" parameterType="student">
+		DELETE FROM
+			TBL_STUDENT
+		WHERE
+			STUDENT_ID = #{studentId}
+		AND
+			COLLEGE_ID = #{collegeId}
+	</delete>
+	
+	<select id="getStudentInCourseList" parameterType="subject" resultType="student">
+		SELECT
+			STUDENT_ID AS studentId
+			, STUDENT_NAME AS studentName
+			, GRADE AS grade
+		FROM
+			TBL_STUDENT
+		WHERE 
+			STUDENT_ID NOT IN
+		(
+			SELECT
+				S.STUDENT_ID AS studentId
+			FROM
+				TBL_STUDENT S, TBL_COURSES C
+			WHERE
+				S.STUDENT_ID = C.STUDENT_ID
+			AND
+				C.COLLEGE_ID = #{collegeId}
+			AND
+				C.SUBJECT_NAME = #{subjectName}
+			AND
+				C.SEMESTER = #{semester}
+		)
 	</select>
 </mapper>

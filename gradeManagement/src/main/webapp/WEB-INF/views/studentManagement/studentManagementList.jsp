@@ -23,6 +23,7 @@ $(document).ready(function() {
 						$("#studentManagementForm").attr("action", "${pageContext.request.contextPath}/studentManagement/updateStudentManagement");
 						$("#studentName").val(data.studentName);
 						$("#studentId").val(data.studentId).attr("readonly", true);
+						$("#grade").val(data.grade);
 						$("#deleteStudentManagementBtn").show();
 						$(".error").text('');
 						var collegeTr = $("#addStudentManagementTable > tbody > tr").eq(0);
@@ -51,48 +52,53 @@ $(document).ready(function() {
 		}
 	}
 	
+	$(document)
+		.on("click", "#addButton", function() {
+			$("#studentName").val('').attr("readonly", false);
+			$("#studentId").val('').attr("readonly", false);
+			$("#grade").val('').attr("readonly", false);
+			$("#deleteStudentManagementBtn").hide();
+			var collegeTr = $("#addStudentManagementTable > tbody > tr").eq(0);
+			collegeTr.remove();
+			
+			$("#addStudentManagementTable > tbody").prepend(
+					'<tr class="odd gradeX">'
+	            		+ '<th style="width:40%; text-align:center; vertical-align:middle">학교이름</th>'
+		             	+ '<td>'
+		             		+ '<select id="collegeId" name="collegeId" class="form-control">'
+		             			+ '<option value="${college.collegeId}">${college.collegeName}</option>'
+		             		+ '</select>'
+	             		+ '</td>'
+	               	+ '</tr>'
+			);
+			$("#studentManagementForm").attr("action", "${pageContext.request.contextPath}/studentManagement/addStudent");
+			$(".error").text('');
+		});
 	
-	$("#addButton").click(function() {
-		$("#studentName").val('').attr("readonly", false);
-		$("#studentId").val('').attr("readonly", false);
-		$("#deleteStudentManagementBtn").hide();
-		var collegeTr = $("#addStudentManagementTable > tbody > tr").eq(0);
-		collegeTr.remove();
-		
-		$("#addStudentManagementTable > tbody").prepend(
-				'<tr class="odd gradeX">'
-            		+ '<th style="width:40%; text-align:center; vertical-align:middle">학교이름</th>'
-	             	+ '<td>'
-	             		+ '<select id="collegeId" name="collegeId" class="form-control">'
-	             			+ '<option value="${college.collegeId}">${college.collegeName}</option>'
-	             		+ '</select>'
-             		+ '</td>'
-               	+ '</tr>'
-		);
-		$("#studentManagementForm").attr("action", "${pageContext.request.contextPath}/studentManagement/addStudent");
-		$(".error").text('');
-	});
 	
-	$("#deleteStudentManagementBtn").click(function() {
-		if(window.confirm("정말 삭제하시겠습니까?")) {
-			$.ajax({
-				url : "${pageContext.request.contextPath}/studentManagement/deleteStudentManagement"
-				, method : "POST"
-				, data : {
-					"studentId" : $("#studentId").val()
-				}
-				, success: function(data) {
-					if(data) {
-						alert("정상 삭제 되었습니다.");
-						location.reload();
+	$(document)
+		.on('click', "#deleteStudentManagementBtn", function(){
+			if(window.confirm("정말 삭제하시겠습니까?")) {
+				$.ajax({
+					url : "${pageContext.request.contextPath}/studentManagement/deleteStudent"
+					, method : "POST"
+					, data : {
+						"studentId" : $("#studentId").val()
+						, "collegeId" : $("#collegeId").val()
 					}
-					else {
-						alert("삭제가 되지 않았습니다.")
+					, success: function(data) {
+						if(data) {
+							alert("정상 삭제 되었습니다.");
+							location.reload();
+						}
+						else {
+							alert("삭제가 되지 않았습니다.")
+						}
 					}
-				}
-			});
-		}
-	});
+				});
+			}
+			
+		});
 	
 	$("#studentManagementForm").validate({
 		rules : {
@@ -180,6 +186,7 @@ $(document).ready(function() {
                             <tr>
                                 <th style="text-align:center; font-size:17px; font-weight:bold">학교이름</th>
                                 <th style="text-align:center; font-size:17px; font-weight:bold">학번</th>
+                                <th style="text-align:center; font-size:17px; font-weight:bold">학년</th>
                                 <th style="text-align:center; font-size:17px; font-weight:bold">학생이름</th>
                             </tr>
                         </thead>
@@ -198,6 +205,7 @@ $(document).ready(function() {
 				                        	
 				                        	<td><b>${college.collegeName}</b><input type="hidden" id="collegeId${i.index}" value="${college.collegeId}"/></b></td>
 				                        	<td><b>${list.studentId}<input type="hidden" id="studentId${i.index}" value="${list.studentId}"/></b></td>
+				                        	<td><b>${list.grade}</b></td>
 				                        	<td><b>${list.studentName}</b></td>
 				                        </tr>
 			                        </c:forEach>
@@ -243,6 +251,12 @@ $(document).ready(function() {
 			                	<th style="width:40%; text-align:center; vertical-align:middle">학번</th>
 				             	<td>
 				             		<input type="text" id="studentId" name="studentId" class="form-control" placeholder="학번을 입력하세요." style="text-align:center;"/>
+				             	</td>
+			                </tr>
+			                <tr class="odd gradeX">
+			                	<th style="width:40%; text-align:center; vertical-align:middle">학년</th>
+				             	<td>
+				             		<input type="text" id="grade" name="grade" class="form-control" placeholder="학년을 입력하세요." style="text-align:center;"/>
 				             	</td>
 			                </tr>
 			                <tr class="odd gradeX">

@@ -16,6 +16,10 @@ public class Courses {
 	private int midtermExamScore;
 	private int finalExamScore;
 	private int reportScore;
+	private String collegeName;
+	private String studentName;
+	private int totalScore;
+	private int grade;
 	
 	public int getCollegeId() {
 		return collegeId;
@@ -70,6 +74,30 @@ public class Courses {
 	}
 	public void setReportScore(int reportScore) {
 		this.reportScore = reportScore;
+	}
+	public String getCollegeName() {
+		return collegeName;
+	}
+	public void setCollegeName(String collegeName) {
+		this.collegeName = collegeName;
+	}
+	public String getStudentName() {
+		return studentName;
+	}
+	public void setStudentName(String studentName) {
+		this.studentName = studentName;
+	}
+	public int getTotalScore() {
+		return totalScore;
+	}
+	public void setTotalScore(int totalScore) {
+		this.totalScore = totalScore;
+	}
+	public int getGrade() {
+		return grade;
+	}
+	public void setGrade(int grade) {
+		this.grade = grade;
 	}
 	@Override
 	public String toString() {

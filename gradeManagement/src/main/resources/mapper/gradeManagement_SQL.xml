@@ -1,6 +1,74 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="test">
-
+<mapper namespace="gradeManagementDao">
+	<update id="addManagement" parameterType="subject">
+		UPDATE TBL_SUBJECT 
+		SET
+			USE_YN = 'Y'
+		WHERE
+			COLLEGE_ID = #{collegeId}
+		AND
+			SEMESTER = #{semester}
+		AND
+			REPLACE(SUBJECT_NAME, ' ', '') = REPLACE(#{subjectName}, ' ', '')
+	</update>
+	
+	<select id="getCourseList" parameterType="subject" resultType="courses">
+		SELECT
+			CR.COLLEGE_ID AS collegeId
+			, CR.STUDENT_ID AS studentId
+			, CR.SEMESTER AS semester
+			, CR.SUBJECT_NAME AS subjectName
+			, CR.ATTENDANCE AS attendance
+			, CR.ATTENDANCE_SCORE AS attendanceScore
+			, CR.MIDTERM_EXAM_SCORE AS midtermExamScore
+			, CR.FINAL_EXAM_SCORE AS finaExamScore
+			, CR.REPORT_SCORE AS reportScore
+			, CR.TOTAL_SCORE AS totalScore
+     		, CL.COLLEGE_NAME AS collegeName
+      		, S.STUDENT_NAME AS studentName
+      		, S.GRADE AS grade
+		FROM
+			TBL_COURSES CR, TBL_COLLEGE CL, TBL_STUDENT S
+	    WHERE
+	    	CR.COLLEGE_ID = CL.COLLEGE_ID
+	    AND
+	    	CR.STUDENT_ID = S.STUDENT_ID
+		AND
+			CR.COLLEGE_ID = #{collegeId}
+		AND	
+			CR.SEMESTER = #{semester}
+		AND
+			REPLACE(CR.SUBJECT_NAME, ' ', '') = REPLACE(#{subjectName}, ' ', '')
+	</select>
+	
+	<insert id="addStudentForCourses" parameterType="courses">
+		INSERT INTO TBL_COURSES
+			(
+				COLLEGE_ID
+				, STUDENT_ID
+				, SEMESTER
+				, SUBJECT_NAME
+			)
+		VALUES
+			(
+				#{collegeId, jdbcType=INTEGER}
+				, #{studentId, jdbcType=INTEGER}
+				, #{semester, jdbcType=VARCHAR}
+				, #{subjectName, jdbcType=VARCHAR}
+			)
+	</insert>
+	
+	<delete id="deleteStudentIncourses" parameterType="courses">
+		DELETE FROM TBL_COURSES
+		WHERE
+			COLLEGE_ID = #{collegeId}
+		AND
+			STUDENT_ID = #{studentId}
+		AND
+			SEMESTER = #{semester}
+		AND
+			SUBJECT_NAME = #{subjectName}
+	</delete>
 </mapper>
