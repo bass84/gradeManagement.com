@@ -90,7 +90,8 @@
 					for(var i = 0; i < buttons.length; i++) {
 						$(buttons[i]).hide();
 					}
-					$("#buttons").append('<button id="addScoreButton" class="btn btn-primary btn-lg">등록</button>');
+					$("#buttons").append('<button id="goListButton" class="btn btn-default btn-lg">목록</button>');
+					$("#buttons").append('<button id="addScoreButton" class="btn btn-primary btn-lg" style="margin-left:7px;">등록</button>');
 					var courses = $("#subjectTbody > tr");
 					var gate = function(i) {
 						var attendance = $(courses[i]).find("td").eq(4).text();
@@ -113,18 +114,81 @@
 						$(courses[i]).find("td").eq(9).text("")
 							.append('<input type="text" class="form-control" readonly id="totalScore' + i + '" value="' + totalScore + '" style="text-align:center;"/>');
 						
+						
+						attendanceScore = $("#attendanceScore").val() == null || '' ? 0 : $("#attendanceScore").val() * 1;
+						midtermExamScore = $("#midtermExamScore").val() == null || '' ? 0 : $("#midtermExamScore").val() * 1;
+						finalExamScore = $("#finalExamScore").val() == null || '' ? 0 : $("#finalExamScore").val() * 1;
+						reportScore = $("#reportScore").val() == null || '' ? 0 : $("#reportScore").val() * 1;
+						totalScore = attendanceScore + midtermExamScore + finalExamScore + reportScore;
+						
 						$("#attendance" + i).keyup(function() {
-							//var index = $(this).attr("id").substr(10);
-							$("#attendanceScore" + i).val(attendanceScoreRatio - (((15 - $(this).val()) * 2/15) * attendanceScoreRatio));
+							attendanceScore = Math.round(attendanceScoreRatio - (((15 - $(this).val()) * 2/15) * attendanceScoreRatio));
+							$("#attendanceScore" + i).val(attendanceScore <= 0 ? 0 : attendanceScore);
+							totalScore = attendanceScore + midtermExamScore + finalExamScore + reportScore;
+							$("#totalScore" + i).val(totalScore);
 						});
+						
+						$("#midtermExamScore" + i).keyup(function() {
+							midtermExamScore = $("#midtermExamScore" + i).val() * 1;
+							totalScore = attendanceScore + midtermExamScore + finalExamScore + reportScore;
+							$("#totalScore" + i).val(totalScore);
+						});
+						
+						$("#finalExamScore" + i).keyup(function() {
+							finalExamScore = $("#finalExamScore" + i).val() * 1;
+							totalScore = attendanceScore + midtermExamScore + finalExamScore + reportScore;
+							$("#totalScore" + i).val(totalScore);
+						});
+						
+						$("#reportScore" + i).keyup(function() {
+							reportScore = $("#reportScore" + i).val() * 1;
+							totalScore = attendanceScore + midtermExamScore + finalExamScore + reportScore;
+							$("#totalScore" + i).val(totalScore);
+						});						
 						
 					}
 					for(var i = 0; i < courses.length; i++) {
 						gate(i);
 					}
 					
-					
 				}
+		});
+		
+		$(document)
+			.on("click", "#addScoreButton", function() {
+				var courses = $("#subjectTbody > tr");
+				var coursesValueArray = new Array();
+				for(var i = 0; i < courses.length; i++) {
+					var coursesValue = {
+											"attendance" : $("#attendance" + i).val()
+											, "attendanceScore" : $("#attendanceScore" + i).val()
+											, "midtermExamScore" : $("#midtermExamScore" + i).val() 
+											, "finalExamScore" : $("#finalExamScore" + i).val() 
+											, "reportScore" : $("#reportScore" + i).val() 
+											, "totalScore" : $("#totalScore" + i).val()
+											, "studentId" : $("#studentId" + i).val()
+											, "collegeId" : $("input[name='collegeId']").val()
+											, "semester" : $("input[name='semester']").val()
+											, "subjectName" : $("input[name='subjectName']").val()
+									   };
+				coursesValueArray.push(coursesValue);
+				}
+				var sendMsg = $.toJSON(coursesValueArray);
+				
+				$.ajax({
+					type: "POST"
+					, url: "${pageContext.request.contextPath}/management/insertScores"
+					, data: {coursesValueJson : sendMsg}
+					, async: false
+					, success : function(result) {
+						if(result) {
+							alert("정상적으로 입력되었습니다.");
+						}
+						else {
+							alert("정상적으로 입력되지 않았습니다.");
+						}
+					}
+				});
 		});
 		
 		
@@ -162,6 +226,7 @@
 	                                <th style="text-align:center; font-size:17px; font-weight:bold">기말고사점수</th>
 	                                <th style="text-align:center; font-size:17px; font-weight:bold">레포트점수</th>
 	                                <th style="text-align:center; font-size:17px; font-weight:bold">총점</th>
+	                                <th style="text-align:center; font-size:17px; font-weight:bold">석차</th>
 	                            </tr>
 	                        </thead>
 	                        <tbody id="subjectTbody">
@@ -178,6 +243,7 @@
 		                        	<c:otherwise>
 		                        		<c:forEach items="${courseList}" var="list" varStatus="i">
 				                            <tr class="odd gradeX">
+				                            	<input type="hidden" id="studentId${i.index}" value="${list.studentId}" />
 				                            	<td style="text-align:center">
 				                            		<input type="checkbox" id="courses${i.index}" name="courses" value="${list.collegeId}#${list.studentId}#${list.semester}#${list.subjectName}" style="width:16px; height:16px;"/>
 				                            	</td>
@@ -190,6 +256,7 @@
 				                                <td style="text-align:center">${list.finalExamScore}</td>
 				                                <td style="text-align:center">${list.reportScore}</td>
 				                                <td style="text-align:center">${list.totalScore}</td>
+				                                <td style="text-align:center">${list.ranking}</td>
 				                            </tr>
 		                            	</c:forEach>
 		                        	</c:otherwise>

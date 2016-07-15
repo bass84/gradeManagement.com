@@ -36,6 +36,8 @@
 	
 	<script type="text/javascript" src="/resources/jqueryValidation/dist/localization/messages_ko.min.js"></script>
 	
+	<script type="text/javascript" src="/resources/js/jquery.json.min.js"></script>
+	
 	<div id="wrapper">
 		
 		<div id="left" class="navbar-default sidebar" role="navigation">

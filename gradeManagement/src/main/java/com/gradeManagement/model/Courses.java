@@ -20,7 +20,7 @@ public class Courses {
 	private String studentName;
 	private int totalScore;
 	private int grade;
-	
+	private int ranking;
 	public int getCollegeId() {
 		return collegeId;
 	}
@@ -98,6 +98,12 @@ public class Courses {
 	}
 	public void setGrade(int grade) {
 		this.grade = grade;
+	}
+	public int getRanking() {
+		return ranking;
+	}
+	public void setRanking(int ranking) {
+		this.ranking = ranking;
 	}
 	@Override
 	public String toString() {

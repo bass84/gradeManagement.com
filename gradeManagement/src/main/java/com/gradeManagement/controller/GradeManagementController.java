@@ -104,5 +104,12 @@ public class GradeManagementController {
 		boolean isResult = gradeManagementService.deleteStudentIncourses(checkedValue);
 		return isResult;
 	}
+	
+	@RequestMapping(value="/insertScores", method=RequestMethod.POST)
+	@ResponseBody
+	public boolean insertScores(String coursesValueJson) {
+		boolean isResult = gradeManagementService.insertScores(coursesValueJson);
+		return isResult;
+	}
 
 }

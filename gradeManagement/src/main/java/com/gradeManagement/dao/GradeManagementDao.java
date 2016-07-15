@@ -32,5 +32,12 @@ public class GradeManagementDao {
 		sqlSessionTemplate.delete("gradeManagementDao.deleteStudentIncourses", courses);
 	}
 
+	public void insertScores(Courses courses) {
+		sqlSessionTemplate.update("gradeManagementDao.insertScores", courses);
+		
+	}
+
+	
+
 
 }

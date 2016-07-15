@@ -29,6 +29,7 @@
      		, CL.COLLEGE_NAME AS collegeName
       		, S.STUDENT_NAME AS studentName
       		, S.GRADE AS grade
+      		, RANK() OVER(PARTITION BY CR.COLLEGE_ID, CR.SEMESTER, CR.SUBJECT_NAME ORDER BY CR.TOTAL_SCORE DESC) AS ranking
 		FROM
 			TBL_COURSES CR, TBL_COLLEGE CL, TBL_STUDENT S
 	    WHERE
@@ -41,6 +42,8 @@
 			CR.SEMESTER = #{semester}
 		AND
 			REPLACE(CR.SUBJECT_NAME, ' ', '') = REPLACE(#{subjectName}, ' ', '')
+		ORDER BY
+			ranking
 	</select>
 	
 	<insert id="addStudentForCourses" parameterType="courses">
@@ -71,4 +74,23 @@
 		AND
 			SUBJECT_NAME = #{subjectName}
 	</delete>
+	
+	<update id="insertScores" parameterType="courses">
+		UPDATE TBL_COURSES
+		SET
+			ATTENDANCE = #{attendance, jdbcType=INTEGER}
+			, ATTENDANCE_SCORE = #{attendanceScore, jdbcType=INTEGER}
+			, MIDTERM_EXAM_SCORE = #{midtermExamScore, jdbcType=INTEGER}
+			, FINAL_EXAM_SCORE = #{finalExamScore, jdbcType=INTEGER}
+			, REPORT_SCORE = #{reportScore, jdbcType=INTEGER}
+			, TOTAL_SCORE = #{totalScore, jdbcType=INTEGER}  
+		WHERE
+			COLLEGE_ID = #{collegeId}
+		AND
+			STUDENT_ID = #{studentId}
+		AND
+			SUBJECT_NAME = #{subjectName}
+		AND
+			SEMESTER = #{semester}
+	</update>
 </mapper>
