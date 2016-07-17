@@ -122,8 +122,8 @@
                         <thead>
                             <tr>
                                 <th style="text-align:center; font-size:17px; font-weight:bold">학교이름</th>
-                                <th style="text-align:center; font-size:17px; font-weight:bold">연도구분</th>
-                                <th style="text-align:center; font-size:17px; font-weight:bold">학기구분</th>
+                                <th style="text-align:center; font-size:17px; font-weight:bold">연도</th>
+                                <th style="text-align:center; font-size:17px; font-weight:bold">학기</th>
                                 <th style="text-align:center; font-size:17px; font-weight:bold">과목이름</th>
                             </tr>
                         </thead>
@@ -178,11 +178,11 @@
 				                                	<td><input type="text" class="form-control" id="collegeName" style="text-align:center;" readonly/></td>
 				                                </tr>
 					                            <tr class="odd gradeX">
-					                            	<th style="width:40%; text-align:center">연도구분</th>
+					                            	<th style="width:40%; text-align:center">연도</th>
 					                            	<td><input type="text" class="form-control" id="classYear" style="text-align:center;" readonly/></td>
 					                            </tr>
 					                            <tr class="odd gradeX">
-					                            	<th style="width:40%; text-align:center">학기구분</th>
+					                            	<th style="width:40%; text-align:center">학기</th>
 					                            	<td><input type="text" class="form-control" id="classSemester" style="text-align:center;" readonly/></td>
 					                            </tr>
 					                            <tr class="odd gradeX">

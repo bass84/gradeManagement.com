@@ -77,6 +77,7 @@ public class GradeManagementController {
 		List<Student> studentList = studentManagementService.getStudentInCourseList(subject);
 		List<Subject> subjectList = subjectManagementService.getSubjectManagementList();
 		List<Subject> subjectListUseY = new ArrayList<Subject>();
+		logger.info(courseList);
 		
 		for(Subject s : subjectList) {
 			if(s.getUseYn() != null && s.getUseYn().equals("Y")) {

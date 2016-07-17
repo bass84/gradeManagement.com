@@ -90,61 +90,106 @@
 					for(var i = 0; i < buttons.length; i++) {
 						$(buttons[i]).hide();
 					}
+					$("#subjectThead > tr > th").eq(0).remove();
+					$("#subjectThead > tr > th").eq(9).remove();
+					$(".row").children(".col-lg-12").eq(0).attr("style", "").css("width", "auto")
+					//$(".row").children(".col-lg-12").eq(0).css("width", "auto");
 					$("#buttons").append('<button id="goListButton" class="btn btn-default btn-lg">목록</button>');
 					$("#buttons").append('<button id="addScoreButton" class="btn btn-primary btn-lg" style="margin-left:7px;">등록</button>');
 					var courses = $("#subjectTbody > tr");
 					var gate = function(i) {
-						var attendance = $(courses[i]).find("td").eq(4).text();
-						var attendanceScore = $(courses[i]).find("td").eq(5).text();
-						var midtermExamScore = $(courses[i]).find("td").eq(6).text();
-						var finalExamScore = $(courses[i]).find("td").eq(7).text();
-						var reportScore = $(courses[i]).find("td").eq(8).text();
-						var totalScore = $(courses[i]).find("td").eq(9).text();
+						$(courses[i]).find("td").eq(0).remove();
+						$(courses[i]).find("td").eq(9).remove();
 						
-						$(courses[i]).find("td").eq(4).text("")
+						var attendance = $(courses[i]).find("td").eq(3).text();
+						var attendanceScore = $(courses[i]).find("td").eq(4).text();
+						var midtermExamScore = $(courses[i]).find("td").eq(5).text();
+						var finalExamScore = $(courses[i]).find("td").eq(6).text();
+						var reportScore = $(courses[i]).find("td").eq(7).text();
+						var totalScore = $(courses[i]).find("td").eq(8).text();
+						
+						$(courses[i]).find("td").eq(3).text("")
 							.append('<input type="text" class="form-control" id="attendance' + i + '" value="' + attendance + '" style="text-align:center;"/>');
-						$(courses[i]).find("td").eq(5).text("")
+						$(courses[i]).find("td").eq(4).text("")
 							.append('<input type="text" class="form-control" readonly id="attendanceScore' + i + '" name="attendanceScore" value="' + attendanceScore + '" style="text-align:center;"/>');
-						$(courses[i]).find("td").eq(6).text("")
+						$(courses[i]).find("td").eq(5).text("")
 							.append('<input type="text" class="form-control" id="midtermExamScore' + i + '" value="' + midtermExamScore + '" style="text-align:center;"/>');
-						$(courses[i]).find("td").eq(7).text("")
+						$(courses[i]).find("td").eq(6).text("")
 							.append('<input type="text" class="form-control" id="finalExamScore' + i + '" value="' + finalExamScore + '" style="text-align:center;"/>');
-						$(courses[i]).find("td").eq(8).text("")
+						$(courses[i]).find("td").eq(7).text("")
 							.append('<input type="text" class="form-control" id="reportScore' + i + '" value="' + reportScore + '" style="text-align:center;"/>');
-						$(courses[i]).find("td").eq(9).text("")
+						$(courses[i]).find("td").eq(8).text("")
 							.append('<input type="text" class="form-control" readonly id="totalScore' + i + '" value="' + totalScore + '" style="text-align:center;"/>');
 						
 						
-						attendanceScore = $("#attendanceScore").val() == null || '' ? 0 : $("#attendanceScore").val() * 1;
-						midtermExamScore = $("#midtermExamScore").val() == null || '' ? 0 : $("#midtermExamScore").val() * 1;
-						finalExamScore = $("#finalExamScore").val() == null || '' ? 0 : $("#finalExamScore").val() * 1;
-						reportScore = $("#reportScore").val() == null || '' ? 0 : $("#reportScore").val() * 1;
+						attendanceScore = $("#attendanceScore" + i).val() == null || '' ? 0 : $("#attendanceScore" + i).val() * 1;
+						midtermExamScore = $("#midtermExamScore" + i).val() == null || '' ? 0 : $("#midtermExamScore" + i).val() * 1;
+						finalExamScore = $("#finalExamScore" + i).val() == null || '' ? 0 : $("#finalExamScore" + i).val() * 1;
+						reportScore = $("#reportScore" + i).val() == null || '' ? 0 : $("#reportScore" + i).val() * 1;
 						totalScore = attendanceScore + midtermExamScore + finalExamScore + reportScore;
 						
-						$("#attendance" + i).keyup(function() {
-							attendanceScore = Math.round(attendanceScoreRatio - (((15 - $(this).val()) * 2/15) * attendanceScoreRatio));
-							$("#attendanceScore" + i).val(attendanceScore <= 0 ? 0 : attendanceScore);
-							totalScore = attendanceScore + midtermExamScore + finalExamScore + reportScore;
-							$("#totalScore" + i).val(totalScore);
+						$("#attendance" + i).keyup(function(e) {
+							if(e.which > 47 && e.which < 58 || e.which == 8) {
+								if($(this).val() > 15 || $(this).val() < 0) {
+									alert("0 ~ 15까지의 숫자만 입력하여주세요.");
+									$(this).val("");
+									$(this).focus();
+									return false;
+								} else {
+									attendanceScore = Math.round(attendanceScoreRatio - (((15 - $(this).val()) * 2/15) * attendanceScoreRatio)) <= 0 ? 0 :
+										Math.round(attendanceScoreRatio - (((15 - $(this).val()) * 2/15) * attendanceScoreRatio));
+									$("#attendanceScore" + i).val(attendanceScore);
+									totalScore = attendanceScore + midtermExamScore + finalExamScore + reportScore;
+									$("#totalScore" + i).val(totalScore);
+								}
+							}
+							else {
+								alert("숫자만 입력하세요.");
+								$(this).val("");
+								$(this).focus();
+								return false;
+							}
+							
 						});
 						
-						$("#midtermExamScore" + i).keyup(function() {
-							midtermExamScore = $("#midtermExamScore" + i).val() * 1;
-							totalScore = attendanceScore + midtermExamScore + finalExamScore + reportScore;
-							$("#totalScore" + i).val(totalScore);
+						$("#midtermExamScore" + i).keyup(function(e) {
+							if(e.which > 47 && e.which < 58 || e.which == 8) {
+								midtermExamScore = $("#midtermExamScore" + i).val() * 1;
+								totalScore = attendanceScore + midtermExamScore + finalExamScore + reportScore;
+								$("#totalScore" + i).val(totalScore);
+							}
+							else {
+								alert("숫자만 입력하세요.");
+								$(this).val("");
+								$(this).focus();
+							}
 						});
 						
-						$("#finalExamScore" + i).keyup(function() {
-							finalExamScore = $("#finalExamScore" + i).val() * 1;
-							totalScore = attendanceScore + midtermExamScore + finalExamScore + reportScore;
-							$("#totalScore" + i).val(totalScore);
+						$("#finalExamScore" + i).keyup(function(e) {
+							if(e.which > 47 && e.which < 58 || e.which == 8) {
+								finalExamScore = $("#finalExamScore" + i).val() * 1;
+								totalScore = attendanceScore + midtermExamScore + finalExamScore + reportScore;
+								$("#totalScore" + i).val(totalScore);
+							}
+							else {
+								alert("숫자만 입력하세요.");
+								$(this).val("");
+								$(this).focus();
+							}
 						});
 						
-						$("#reportScore" + i).keyup(function() {
-							reportScore = $("#reportScore" + i).val() * 1;
-							totalScore = attendanceScore + midtermExamScore + finalExamScore + reportScore;
-							$("#totalScore" + i).val(totalScore);
-						});						
+						$("#reportScore" + i).keyup(function(e) {
+							if(e.which > 47 && e.which < 58 || e.which == 8) {
+								reportScore = $("#reportScore" + i).val() * 1;
+								totalScore = attendanceScore + midtermExamScore + finalExamScore + reportScore;
+								$("#totalScore" + i).val(totalScore);
+							}
+							else {
+								alert("숫자만 입력하세요.");
+								$(this).val("");
+								$(this).focus();
+							}
+						});
 						
 					}
 					for(var i = 0; i < courses.length; i++) {
@@ -156,40 +201,57 @@
 		
 		$(document)
 			.on("click", "#addScoreButton", function() {
-				var courses = $("#subjectTbody > tr");
-				var coursesValueArray = new Array();
-				for(var i = 0; i < courses.length; i++) {
-					var coursesValue = {
-											"attendance" : $("#attendance" + i).val()
-											, "attendanceScore" : $("#attendanceScore" + i).val()
-											, "midtermExamScore" : $("#midtermExamScore" + i).val() 
-											, "finalExamScore" : $("#finalExamScore" + i).val() 
-											, "reportScore" : $("#reportScore" + i).val() 
-											, "totalScore" : $("#totalScore" + i).val()
-											, "studentId" : $("#studentId" + i).val()
-											, "collegeId" : $("input[name='collegeId']").val()
-											, "semester" : $("input[name='semester']").val()
-											, "subjectName" : $("input[name='subjectName']").val()
-									   };
-				coursesValueArray.push(coursesValue);
-				}
-				var sendMsg = $.toJSON(coursesValueArray);
-				
-				$.ajax({
-					type: "POST"
-					, url: "${pageContext.request.contextPath}/management/insertScores"
-					, data: {coursesValueJson : sendMsg}
-					, async: false
-					, success : function(result) {
-						if(result) {
-							alert("정상적으로 입력되었습니다.");
-						}
-						else {
-							alert("정상적으로 입력되지 않았습니다.");
-						}
+				if(window.confirm("입력하신 내용을 저장하시겠습니까?")) {
+					var courses = $("#subjectTbody > tr");
+					var coursesValueArray = new Array();
+					for(var i = 0; i < courses.length; i++) {
+						var coursesValue = {
+												"attendance" : $("#attendance" + i).val()
+												, "attendanceScore" : $("#attendanceScore" + i).val()
+												, "midtermExamScore" : $("#midtermExamScore" + i).val() 
+												, "finalExamScore" : $("#finalExamScore" + i).val() 
+												, "reportScore" : $("#reportScore" + i).val() 
+												, "totalScore" : $("#totalScore" + i).val()
+												, "studentId" : $("#studentId" + i).val()
+												, "collegeId" : $("input[name='collegeId']").val()
+												, "semester" : $("input[name='semester']").val()
+												, "subjectName" : $("input[name='subjectName']").val()
+										   };
+					coursesValueArray.push(coursesValue);
 					}
-				});
+					var sendMsg = $.toJSON(coursesValueArray);
+					
+					$.ajax({
+						type: "POST"
+						, url: "${pageContext.request.contextPath}/management/insertScores"
+						, data: {coursesValueJson : sendMsg}
+						, async: false
+						, success : function(result) {
+							if(result) {
+								alert("정상적으로 입력되었습니다.");
+								location.href = "${pageContext.request.contextPath}/management/getManagementView"
+									+ "?collegeId=" + $("input[name='collegeId']").val() + "&semester=" 
+									+ $("input[name='semester']").val() + "&subjectName=" + $("input[name='subjectName']").val();
+							}
+							else {
+								alert("정상적으로 입력되지 않았습니다.");
+							}
+						}
+					});
+				}
 		});
+		
+		$(document)
+			.on("click", "#goListButton", function() {
+				location.href = "${pageContext.request.contextPath}/management/getManagementView"
+					+ "?collegeId=" + $("input[name='collegeId']").val() + "&semester=" 
+					+ $("input[name='semester']").val() + "&subjectName=" + $("input[name='subjectName']").val();
+			});
+		
+		$(document)
+			.on("click", "#goManagementListButton", function() {
+				location.href = "${pageContext.request.contextPath}/management/getManagementList";
+			});
 		
 		
 		
@@ -204,7 +266,7 @@
 </script>
 
 <div class="row">
-            <div class="col-lg-12">
+            <div class="col-lg-12" style="max-width:97%;">
                  <div class="panel panel-default">
                      <div class="panel-heading">
                          DataTables Advanced Tables
@@ -214,7 +276,7 @@
                 <div class="dataTable_wrapper">
                 	<form id="addScoreForm" action="${pageContext.request.contextPath}/management/addScores">
 	                    <table class="table table-striped table-bordered table-hover" id="courseTable">
-	                        <thead>
+	                        <thead id="subjectThead">
 	                            <tr>
 	                            	<th style="text-align:center;"><input type="checkbox" id="courses" style="width:16px; height:16px;"/></th>
 	                            	<th style="text-align:center; font-size:17px; font-weight:bold">학년</th>
@@ -266,6 +328,7 @@
 	                    </table>
                     </form>
                     <div style="text-align:right;" id="buttons">
+                    	<button class="btn btn-default btn-lg" id="goManagementListButton">목록</button>
                     	<button class="btn btn-danger btn-lg" id="studentDeleteButton">학생삭제</button>
                     	<button class="btn btn-success btn-lg" id="ScoreRegistButton">점수등록</button>
                     	<button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#studentRegistModal" id="studentRegistButton">학생등록</button>

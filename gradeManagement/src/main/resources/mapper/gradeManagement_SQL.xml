@@ -23,7 +23,7 @@
 			, CR.ATTENDANCE AS attendance
 			, CR.ATTENDANCE_SCORE AS attendanceScore
 			, CR.MIDTERM_EXAM_SCORE AS midtermExamScore
-			, CR.FINAL_EXAM_SCORE AS finaExamScore
+			, CR.FINAL_EXAM_SCORE AS finalExamScore
 			, CR.REPORT_SCORE AS reportScore
 			, CR.TOTAL_SCORE AS totalScore
      		, CL.COLLEGE_NAME AS collegeName
